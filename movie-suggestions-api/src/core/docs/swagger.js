@@ -7,7 +7,7 @@ const doc = {
     description: 'Documentação da api movie-suggestions-api Api.',
   },
   host: process.env.SWAGGER_URL || 'localhost:3000',
-  schemes: ['http'],
+  schemes: ['https'],
   securityDefinitions: {
     bearerAuth: {
       type: 'apiKey',
