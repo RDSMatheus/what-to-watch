@@ -14,5 +14,6 @@ export const ENV = {
   APP_URL: requiredEnv('APP_URL'),
   EMAIL: requiredEnv('EMAIL'),
   PASS: requiredEnv('PASS'),
-  PORT: requiredEnv("PORT")
+  PORT: requiredEnv('PORT'),
+  REDIS_URL: requiredEnv('REDIS_URL'),
 };
