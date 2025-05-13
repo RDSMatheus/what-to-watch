@@ -7,7 +7,7 @@
     "test:watch": "jest --watchAll",
     "test:coverage": "jest --coverage",
     "build": "npm run swagger && tsc",
-    "start": "node --env-file=.env ./dist/app.js",
+    "start": "node ./dist/app.js",
     "dev": "tsc-watch --onSuccess \"node --env-file=.env ./dist/app.js\"",
     "swagger": "node --env-file=.env ./src/core/docs/swagger.js",
     "lint": "eslint . --ext .js,.ts"
