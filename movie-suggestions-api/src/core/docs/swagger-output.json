@@ -5,7 +5,7 @@
     "description": "Documentação da api movie-suggestions-api Api.",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "http://localhost:3000",
   "basePath": "/",
   "schemes": [
     "http"

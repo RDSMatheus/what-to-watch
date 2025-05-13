@@ -6,6 +6,7 @@ const doc = {
     title: 'movie-suggestions-api Api',
     description: 'Documentação da api movie-suggestions-api Api.',
   },
+  host: process.env.SWAGGER_URL || 'localhost:3000',
   schemes: ['http'],
   securityDefinitions: {
     bearerAuth: {
@@ -75,7 +76,7 @@ const doc = {
       recommendations: [{ $ref: '#/definitions/TMDBmovie' }],
     },
   },
-  host: process.env.BASE_URL || 'localhost:3000',
+
   apis: ['./src/routes/*.ts'],
 };
 

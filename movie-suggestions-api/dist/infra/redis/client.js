@@ -12,7 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.redisClient = void 0;
 exports.connectRedis = connectRedis;
 const redis_1 = require("redis");
-const redisClient = (0, redis_1.createClient)();
+const env_1 = require("../../config/env");
+const redisClient = (0, redis_1.createClient)({
+    url: env_1.ENV.REDIS_URL,
+});
 exports.redisClient = redisClient;
 redisClient.on('error', (error) => {
     console.error('Redis error: ', error);
