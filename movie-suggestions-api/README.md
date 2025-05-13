@@ -13,7 +13,6 @@ A modern RESTful API built with Express.js and TypeScript for movie suggestions.
 - ⚡ Redis caching
 - 🚀 Hot-reload development
 - 🧪 Jest unit testing
-- 🐳 Docker containerization
 
 ## Quick Start
 
