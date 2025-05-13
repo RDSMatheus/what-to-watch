@@ -6,10 +6,11 @@ import cors from 'cors';
 import { errorHandler } from './core/middlewares/error-handler.middleware';
 import { connectRedis } from './infra/redis/client';
 import './core/events/listeners';
+import { ENV } from './config/env';
 
 const app = express();
 
-const port = process.env.PORT || 3000;
+const PORT = ENV.PORT || 3000;
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use(cors());
@@ -18,7 +19,7 @@ connectRedis();
 routes(app);
 errorHandler(app);
 
-app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port} http://localhost:${port}`);
-  console.log(`Documentação http://localhost:${port}/docs`);
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT} http://localhost:${PORT}`);
+  console.log(`Documentação http://localhost:${PORT}/docs`);
 });
