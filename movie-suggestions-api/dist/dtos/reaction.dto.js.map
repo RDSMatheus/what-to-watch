@@ -1,0 +1,1 @@
+{"version":3,"file":"reaction.dto.js","sourceRoot":"","sources":["../../src/dtos/reaction.dto.ts"],"names":[],"mappings":";;;AAAA,6BAAwB;AAExB,MAAM,YAAY,GAAG,OAAC,CAAC,IAAI,CAAC,CAAC,MAAM,EAAE,SAAS,CAAC,CAAC,CAAC;AAEpC,QAAA,WAAW,GAAG,OAAC,CAAC,MAAM,CAAC;IAClC,MAAM,EAAE,OAAC,CAAC,MAAM,EAAE;IAClB,OAAO,EAAE,OAAC,CAAC,MAAM,EAAE;IACnB,IAAI,EAAE,YAAY;CACnB,CAAC,CAAC"}

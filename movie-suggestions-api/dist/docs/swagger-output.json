@@ -1,0 +1,84 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "movie-suggestions-api Api",
+        "description": "Documentação da api movie-suggestions-api Api.",
+        "version": "1.0.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/user": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Cria um novo usuário.",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "Dados do usuário",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserPost"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "201": {
+                        "description": "Usuário criado.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Usuário criado com sucesso!"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reaction": {
+            "post": {
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "UserPost": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "string@email.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "string"
+                }
+            }
+        }
+    }
+}

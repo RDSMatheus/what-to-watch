@@ -1,0 +1,35 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "app/generated/prisma/client"
+}
+
+enum ReactionType {
+  LIKE
+  DISLIKE
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  name      String
+  password  String
+  verified  Boolean    @default(false)
+  reactions Reaction[]
+}
+
+model Reaction {
+  id         Int          @id @default(autoincrement())
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+  movieId    String
+  movieTitle String
+  type       ReactionType
+  createdAt  DateTime     @default(now())
+
+  @@unique([userId, movieId])
+}

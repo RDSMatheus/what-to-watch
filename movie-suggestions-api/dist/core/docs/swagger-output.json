@@ -1,0 +1,1033 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "movie-suggestions-api Api",
+        "description": "Documentação da api movie-suggestions-api Api.",
+        "version": "1.0.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "schemes": [
+        "http"
+    ],
+    "securityDefinitions": {
+        "bearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Insira o token JWT no formato **Bearer &lt;token&gt;**"
+        }
+    },
+    "paths": {
+        "/user": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Cria um novo usuário.",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "Dados do usuário",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserPost"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Usuário criado.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Usuário criado com sucesso!"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{email}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Retorna um usuário via email.",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "params",
+                        "required": true,
+                        "type": "string",
+                        "description": "Dados do usuário"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuário retornado.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Usuário criado com sucesso!"
+                                },
+                                "user": {
+                                    "$ref": "#/definitions/UserResponse"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user/{id}": {
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Deleta um usuário via id.",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "params",
+                        "required": true,
+                        "type": "string",
+                        "description": "Id do usuário"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Usuário deletado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Atualiza um usuário pelo ID",
+                "description": "Atualiza os dados de um usuário existente",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "description": "ID do usuário"
+                    },
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "Dados do usuário para atualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "example": "string"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "example": "string@email.com"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "example": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuário atualizado com sucesso",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Usuário atualizado com sucesso"
+                                },
+                                "user": {
+                                    "$ref": "#/definitions/UserResponse"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Dados inválidos"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Usuário não encontrado"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/reaction": {
+            "post": {
+                "tags": [
+                    "Reaction"
+                ],
+                "summary": "Cria uma nova reação.",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "reaction",
+                        "in": "body",
+                        "description": "Dados da reação",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ReactionPost"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reação com sucesso.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Reagido com sucesso!"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reaction/{userId}": {
+            "get": {
+                "tags": [
+                    "Reaction"
+                ],
+                "summary": "Lista os filmes curtidos por um usuário.",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "description": "ID do usuário"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de filmes curtidos retornada com sucesso.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "movieId": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "movieTitle": {
+                                        "type": "string",
+                                        "example": "string"
+                                    }
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "ID do usuário não informado.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Insira um id."
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Nenhum filme curtido encontrado.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Nenhum filme curtido encontrado."
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reaction/{userId}/{movieId}": {
+            "delete": {
+                "tags": [
+                    "Reaction"
+                ],
+                "summary": "Remove reações de múltiplos usuários a múltiplos filmes.",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "movieId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ids",
+                        "in": "path",
+                        "description": "IDs dos usuários, separados por vírgula",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "movieIds",
+                        "in": "path",
+                        "description": "IDs dos filmes, separados por vírgula",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reações removidas com sucesso.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Reações removidas com sucesso."
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "IDs inválidos.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "IDs inválidos."
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/movie/search/{name}": {
+            "get": {
+                "tags": [
+                    "Movie"
+                ],
+                "summary": "Busca um filme pelo nome.",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Nome do filme"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Filme(s) encontrado(s).",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Filme encontrado"
+                                },
+                                "movies": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/TMDBmovieScore"
+                                    }
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Nome do filme não informado.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Insira o nome de um filme"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Filme não encontrado.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Filme não encontrado."
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/movie/user/{userId}": {
+            "get": {
+                "tags": [
+                    "Movie"
+                ],
+                "summary": "Recomendações de filmes para o usuário.",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "description": "ID do usuário"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recomendações retornadas.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "movieTitle": {
+                                        "type": "string",
+                                        "example": "string"
+                                    },
+                                    "recommendations": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/definitions/TMDBmovieScore"
+                                        }
+                                    }
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Não há filmes para se basear recomendações",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Não há filmes para se basear recomendações"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/movie/trending": {
+            "get": {
+                "tags": [
+                    "Movie"
+                ],
+                "summary": "Busca um filmes que estão em trend.",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Filmes encontrados.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Filmes que estão em trending."
+                                },
+                                "movies": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/TMDBSearch"
+                                    }
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Erro interno do servidor"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login do usuário",
+                "description": "Endpoint para autenticar usuário e gerar token JWT",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Dados de login",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "example": "user@example.com"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "example": "123456"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Login realizado com sucesso",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Token retornado com sucesso!"
+                                },
+                                "token": {
+                                    "type": "string",
+                                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Email/senha inválidos"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/verify-email": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Verifica email do usuário",
+                "description": "Endpoint para verificar email através do token enviado",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "Token de verificação",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Email verificado com sucesso",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Usuário verificado com sucesso!"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Token inválido",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Token inválido"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/recover-password": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Solicita recuperação de senha",
+                "description": "Envia email com link para recuperação de senha",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Email do usuário",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "example": "user@example.com"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Email enviado com sucesso",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Email de recuperação!"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Email não encontrado",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Email inválido"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/redefine-password": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Redefine senha do usuário",
+                "description": "Endpoint para redefinir senha (requer autenticação)",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Nova senha",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "example": "user@example.com"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "example": "123456"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Senha alterada com sucesso",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Senha redefinida com sucesso!"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autorizado",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Token inválido!"
+                                }
+                            },
+                            "xml": {
+                                "name": "main"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "UserPost": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "string@email.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "string"
+                }
+            }
+        },
+        "UserResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "number"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "string@email.com"
+                }
+            }
+        },
+        "AuthResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "string"
+                },
+                "token": {
+                    "type": "string",
+                    "example": "string"
+                }
+            }
+        },
+        "ReactionPost": {
+            "type": "object",
+            "properties": {
+                "movieId": {
+                    "type": "string",
+                    "example": "string"
+                },
+                "userId": {
+                    "type": "string",
+                    "example": "number"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "LIKE",
+                        "DISLIKE"
+                    ]
+                }
+            }
+        },
+        "Reaction": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "example": 1
+                },
+                "userId": {
+                    "type": "number",
+                    "example": 1
+                },
+                "movieId": {
+                    "type": "string",
+                    "example": "string"
+                },
+                "movieTitle": {
+                    "type": "string",
+                    "example": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "LIKE"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00.000Z"
+                }
+            }
+        },
+        "ReactionResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Reação criada com sucesso!"
+                },
+                "reaction": {
+                    "$ref": "#/definitions/Reaction"
+                }
+            }
+        },
+        "TMDBmovie": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "example": 123
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Exemplo de Filme"
+                },
+                "original_title": {
+                    "type": "string",
+                    "example": "Exemplo de Filme"
+                },
+                "overview": {
+                    "type": "string",
+                    "example": "Descrição do filme"
+                },
+                "poster_path": {
+                    "type": "string",
+                    "example": "/poster.jpg"
+                },
+                "media_type": {
+                    "type": "string",
+                    "example": "movie"
+                },
+                "genre_ids": {
+                    "type": "array",
+                    "example": [
+                        1,
+                        2
+                    ],
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "popularity": {
+                    "type": "number",
+                    "example": 10.5
+                },
+                "release_date": {
+                    "type": "string",
+                    "example": "2024-01-01"
+                },
+                "vote_average": {
+                    "type": "number",
+                    "example": 8.2
+                },
+                "vote_count": {
+                    "type": "number",
+                    "example": 100
+                }
+            }
+        },
+        "TMDBmovieScore": {
+            "$ref": "#/definitions/TMDBmovie"
+        },
+        "TMDBSearch": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "type": "number",
+                    "example": 1
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TMDBmovie"
+                    }
+                },
+                "total_pages": {
+                    "type": "number",
+                    "example": 10
+                },
+                "total_results": {
+                    "type": "number",
+                    "example": 100
+                }
+            }
+        },
+        "TMDBSearchResponse": {
+            "type": "object",
+            "properties": {
+                "movieTitle": {
+                    "type": "string",
+                    "example": "Exemplo de Filme"
+                },
+                "recommendations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TMDBmovie"
+                    }
+                }
+            }
+        }
+    },
+    "apis": [
+        "./src/routes/*.ts"
+    ]
+}

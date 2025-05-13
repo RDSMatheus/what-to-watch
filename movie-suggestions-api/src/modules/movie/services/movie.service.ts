@@ -1,0 +1,157 @@
+import axios from 'axios';
+import ReactionRepository from '../../reaction/repository/reaction.repository';
+import {
+  TMDBmovie,
+  TMDBmovieScore,
+  TMDBSearch,
+  TMDBSearchResponse,
+} from '../dto/tmdbmovie.dto';
+import { InternalServerError } from '../../../core/errors/internal-server.error';
+import { NotFoundError } from '../../../core/errors/not-found.error';
+import { ValidationError } from '../../../core/errors/validation.error';
+import { ENV } from '../../../config/env';
+import cache from '../../../core/utils/cache';
+import { ErrorBase } from '../../../core/errors/base.error';
+import { redisClient } from '../../../infra/redis/client';
+
+class MovieService {
+  private reactionRepository: ReactionRepository;
+  constructor(reactionRepository?: ReactionRepository) {
+    this.reactionRepository = reactionRepository ?? new ReactionRepository();
+  }
+
+  async getMovieByName(name: string): Promise<TMDBSearch> {
+    if (!name) throw new ValidationError('Insira o nome de um filme');
+
+    const cachedMovie = await cache<TMDBSearch>(name);
+
+    if (cachedMovie) return cachedMovie;
+    
+    try {
+      const data = await this.fetchFromTMDB<TMDBSearch>(
+        `https://api.themoviedb.org/3/search/movie?query=${name}&include_adult=false&language=en-US&page=1`,
+      );
+
+      if (!data.total_results) throw new NotFoundError('Filme não encontrado.');
+
+      const resultsCombinedScore: TMDBmovieScore[] = data.results.map(
+        (movie) => ({
+          ...movie,
+          combinedScore: this.calculateCombinedScore(movie),
+        }),
+      );
+
+      const resultsSortedByScore = this.sortMovies(resultsCombinedScore);
+
+      const movie = { ...data, results: resultsSortedByScore };
+
+      await redisClient.setEx(name, 3600, JSON.stringify(movie));
+
+      return movie;
+    } catch (error) {
+      if (error instanceof ValidationError || error instanceof NotFoundError) {
+        throw error;
+      }
+      throw new InternalServerError();
+    }
+  }
+
+  async getMovieRecommendations(userId: string): Promise<TMDBSearchResponse[]> {
+    const cachedRecommendations = await cache<TMDBSearchResponse[]>(userId);
+
+    if (cachedRecommendations) return cachedRecommendations;
+
+    const id = Number(userId);
+    if (!id) {
+      throw new ValidationError('Insira o ID do usuário');
+    }
+
+    try {
+      const likedMovies = await this.reactionRepository.getLikedMovies(id);
+
+      if (!likedMovies.length)
+        throw new NotFoundError('Não há filmes para se basear recomendações');
+
+      const fetchedMovies = await Promise.all(
+        likedMovies.map(async (movie) => {
+          const data = await this.fetchFromTMDB<TMDBSearch>(
+            ` https://api.themoviedb.org/3/movie/${movie.movieId}/recommendations`,
+          );
+
+          const resultsCombinedScore: TMDBmovieScore[] = data.results.map(
+            (movie) => ({
+              ...movie,
+              combinedScore: this.calculateCombinedScore(movie),
+            }),
+          );
+
+          const resultsSortedByScore = this.sortMovies(resultsCombinedScore);
+
+          const recommendations = {
+            movieTitle: movie.movieTitle,
+            recommendations: resultsSortedByScore,
+          };
+
+          await redisClient.setEx(
+            userId,
+            3600,
+            JSON.stringify(recommendations),
+          );
+
+          return recommendations;
+        }),
+      );
+
+      return fetchedMovies;
+    } catch (error) {
+      if (error instanceof ValidationError || error instanceof NotFoundError) {
+        throw error;
+      }
+      throw new InternalServerError();
+    }
+  }
+
+  async getTrendingMovies(): Promise<TMDBSearch> {
+    const key = 'trending';
+
+    const cached = await cache<TMDBSearch>(key);
+
+    if (cached) return cached;
+
+    try {
+      const data = this.fetchFromTMDB<TMDBSearch>(
+        'https://api.themoviedb.org/3/trending/movie/week?language=pt-BR',
+      );
+
+      if (!data) throw new InternalServerError();
+
+      await redisClient.setEx(key, 3600, JSON.stringify(data));
+
+      return data;
+    } catch (error) {
+      if (error instanceof Error) throw new ErrorBase(400, error.message);
+      throw error;
+    }
+  }
+
+  private calculateCombinedScore(movie: TMDBmovie): number {
+    return movie.vote_average * 0.6 + movie.popularity * 0.4;
+  }
+
+  private sortMovies(movies: TMDBmovieScore[]): TMDBmovieScore[] {
+    return movies.sort((a, b) => b.combinedScore - a.combinedScore);
+  }
+
+  private async fetchFromTMDB<T>(url: string): Promise<T> {
+    try {
+      const { data } = await axios.get<T>(url, {
+        headers: { Authorization: `Bearer ${ENV.TMBD_TOKEN}` },
+      });
+      return data;
+    } catch {
+      throw new InternalServerError();
+    }
+  }
+}
+
+export default MovieService;

@@ -1,0 +1,18 @@
+{
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src", // Directory for TS code
+    "outDir": "dist", // Output directory for compiled files
+    "sourceMap": true, // Generates source maps to facilitate debugging
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noImplicitAny": true, // Disallows declaration of variables or parameters without a type
+    "noImplicitReturns": true, // Ensures all functions have a specified return type
+    "noEmitOnError": true, // Does not generate JS code if there are any errors during the compilation process
+    "strictNullChecks": true, // Enforces checking for null or undefined values
+    "noUnusedLocals": true // Flags when there are declared but unused variables
+  },
+  "compileOnSave": true,
+  "include": ["src/**/*"],
+  "exclude": ["**/*.spec.ts"]
+}
