@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
+    "build": "tsc-watch --onSuccess \"node ./dist/app.js\"",
     "test": "jest --runInBand --detectOpenHandles",
     "test:watch": "jest --watchAll",
     "test:coverage": "jest --coverage",
