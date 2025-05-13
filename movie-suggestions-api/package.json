@@ -9,7 +9,7 @@
     "build": "npm run swagger && tsc",
     "start": "node ./dist/app.js",
     "dev": "tsc-watch --onSuccess \"node --env-file=.env ./dist/app.js\"",
-    "swagger": "node --env-file=.env ./src/core/docs/swagger.js",
+    "swagger": "node ./src/core/docs/swagger.js",
     "lint": "eslint . --ext .js,.ts"
   },
   "author": "",
