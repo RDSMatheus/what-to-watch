@@ -14,7 +14,7 @@ userRouter.post(
     in: 'body',
     description: 'Dados do usuário',
     required: true,
-    schema: { $ref: "#/definitions/UserPost" }
+    schema: { $ref: "#/components/schemas/UserPost" }
   }
   #swagger.responses[201]= {
     description: 'Usuário criado.', 
@@ -44,7 +44,7 @@ userRouter.get(
     schema: {
       message: "Usuário criado com sucesso!",
       user: {
-       $ref: "#/definitions/UserResponse" 
+       $ref: "#/components/schemas/UserResponse" 
       }
     },
   }
@@ -102,7 +102,7 @@ userRouter.put(
       schema: {
         message: "Usuário atualizado com sucesso",
         user: {
-          $ref: "#/definitions/UserResponse"
+          $ref: "#/components/schemas/UserResponse"
         }
       }
     }

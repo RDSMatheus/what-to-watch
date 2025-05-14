@@ -22,7 +22,7 @@ movieRouter.get('/movie/search/:name',
     schema: {
       message: 'Filme encontrado',
       movies: [
-        { $ref: '#/definitions/TMDBmovieScore' }
+        { $ref: '#/components/schemas/TMDBmovieScore' }
       ]
     }
   }
@@ -36,7 +36,7 @@ movieRouter.get('/movie/search/:name',
   }
 */
 (0, express_async_handler_1.default)(movie_controller_1.default.getMovieByName));
-movieRouter.get('/movie/user/:userId', 
+movieRouter.get('/movie/user/:userId/recommendations', 
 /*
   #swagger.tags = ['Movie']
   #swagger.summary = 'Recomendações de filmes para o usuário.'
@@ -46,14 +46,28 @@ movieRouter.get('/movie/user/:userId',
     required: true,
     type: 'integer'
   }
+  #swagger.parameters['pages'] = {
+    in: 'query',
+    name: 'pages',
+    style: 'deepObject',
+    explode: true,
+    allowReserved: true,
+    description: 'Mapeamento dinâmico movieId→página. Exemplo de uso: ?pages[550]=2&pages[278]=1',
+    schema: {
+      "550":"2"
+    }
+  }
   #swagger.responses[200] = {
     description: 'Recomendações retornadas.',
     schema: [
       {
         movieTitle: 'string',
         recommendations: [
-          { $ref: '#/definitions/TMDBmovieScore' }
-        ]
+          { $ref: '#/components/schemas/TMDBmovieScore' }
+        ],
+        page: 1,
+        total_pages: 10,
+        total_results: 100
       }
     ]
   }
@@ -72,7 +86,7 @@ movieRouter.get('/movie/trending',
     schema: {
       message: 'Filmes que estão em trending.',
       movies: [
-        { $ref: '#/definitions/TMDBSearch' }
+        { $ref: '#/components/schemas/TMDBSearch' }
       ]
     }
   }

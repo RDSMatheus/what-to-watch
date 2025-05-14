@@ -13,7 +13,7 @@ reactionRouter.post(
     in: 'body',
     description: 'Dados da reação',
     required: true,
-    schema: { $ref: "#/definitions/ReactionPost" }
+    schema: { $ref: "#/components/schemas/ReactionPost" }
   }
   #swagger.responses[200]= {
     description: 'Reação com sucesso.', 

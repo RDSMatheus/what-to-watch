@@ -2,10 +2,7 @@ import axios from 'axios';
 import cache from '../../../core/utils/cache';
 import ReactionRepository from '../../reaction/repository/reaction.repository';
 import MovieService from '../services/movie.service';
-import {
-  TMDBSearch,
-  TMDBSearchResponse,
-} from '../dto/tmdbmovie.dto';
+import { TMDBSearch, TMDBSearchResponse } from '../dto/tmdbmovie.dto';
 import { ValidationError } from '../../../core/errors/validation.error';
 import { NotFoundError } from '../../../core/errors/not-found.error';
 import { InternalServerError } from '../../../core/errors/internal-server.error';
@@ -122,17 +119,23 @@ describe('MovieService', () => {
   describe('getMovieRecommendations', () => {
     it('should throw ValidationError if userId is not numeric', async () => {
       await expect(
-        movieService.getMovieRecommendations('abc'),
+        movieService.getMovieRecommendations('abc', {}),
       ).rejects.toBeInstanceOf(ValidationError);
     });
 
     it('should return cached recommendations if present', async () => {
       const fakeCache = [
-        { movieTitle: 'A', recommendations: [] },
+        {
+          movieTitle: 'A',
+          recommendations: [],
+          page: 1,
+          total_pages: 1,
+          total_results: 1,
+        },
       ] as TMDBSearchResponse[];
       (cache as jest.Mock).mockResolvedValue(fakeCache);
 
-      const result = await movieService.getMovieRecommendations('1');
+      const result = await movieService.getMovieRecommendations('1', {});
       expect(cache).toHaveBeenCalledWith('1');
       expect(result).toEqual(fakeCache);
     });
@@ -142,7 +145,7 @@ describe('MovieService', () => {
       reactionRepoMock.getLikedMovies.mockResolvedValue([]);
 
       await expect(
-        movieService.getMovieRecommendations('1'),
+        movieService.getMovieRecommendations('1', {}),
       ).rejects.toBeInstanceOf(NotFoundError);
     });
 
@@ -175,7 +178,7 @@ describe('MovieService', () => {
 
       (axios.get as jest.Mock).mockResolvedValue({ data: recommendationData });
 
-      const result = await movieService.getMovieRecommendations('1');
+      const result = await movieService.getMovieRecommendations('1', {});
 
       expect(result[0].movieTitle).toBe('X');
       expect(result[0].recommendations[0].combinedScore).toBeDefined();
@@ -190,7 +193,7 @@ describe('MovieService', () => {
       (axios.get as jest.Mock).mockRejectedValue(new Error('fail'));
 
       await expect(
-        movieService.getMovieRecommendations('1'),
+        movieService.getMovieRecommendations('1', {}),
       ).rejects.toBeInstanceOf(InternalServerError);
     });
   });

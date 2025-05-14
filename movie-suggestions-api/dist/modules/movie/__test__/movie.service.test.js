@@ -108,21 +108,27 @@ describe('MovieService', () => {
     });
     describe('getMovieRecommendations', () => {
         it('should throw ValidationError if userId is not numeric', () => __awaiter(void 0, void 0, void 0, function* () {
-            yield expect(movieService.getMovieRecommendations('abc')).rejects.toBeInstanceOf(validation_error_1.ValidationError);
+            yield expect(movieService.getMovieRecommendations('abc', {})).rejects.toBeInstanceOf(validation_error_1.ValidationError);
         }));
         it('should return cached recommendations if present', () => __awaiter(void 0, void 0, void 0, function* () {
             const fakeCache = [
-                { movieTitle: 'A', recommendations: [] },
+                {
+                    movieTitle: 'A',
+                    recommendations: [],
+                    page: 1,
+                    total_pages: 1,
+                    total_results: 1,
+                },
             ];
             cache_1.default.mockResolvedValue(fakeCache);
-            const result = yield movieService.getMovieRecommendations('1');
+            const result = yield movieService.getMovieRecommendations('1', {});
             expect(cache_1.default).toHaveBeenCalledWith('1');
             expect(result).toEqual(fakeCache);
         }));
         it('should throw NotFoundError when no liked movies', () => __awaiter(void 0, void 0, void 0, function* () {
             cache_1.default.mockResolvedValue(null);
             reactionRepoMock.getLikedMovies.mockResolvedValue([]);
-            yield expect(movieService.getMovieRecommendations('1')).rejects.toBeInstanceOf(not_found_error_1.NotFoundError);
+            yield expect(movieService.getMovieRecommendations('1', {})).rejects.toBeInstanceOf(not_found_error_1.NotFoundError);
         }));
         it('should return formatted recommendations with combinedScore', () => __awaiter(void 0, void 0, void 0, function* () {
             cache_1.default.mockResolvedValue(null);
@@ -150,7 +156,7 @@ describe('MovieService', () => {
                 total_results: 1,
             };
             axios_1.default.get.mockResolvedValue({ data: recommendationData });
-            const result = yield movieService.getMovieRecommendations('1');
+            const result = yield movieService.getMovieRecommendations('1', {});
             expect(result[0].movieTitle).toBe('X');
             expect(result[0].recommendations[0].combinedScore).toBeDefined();
             expect(result[0].recommendations[0].combinedScore).toBeGreaterThan(0);
@@ -161,7 +167,7 @@ describe('MovieService', () => {
                 { movieId: '10', movieTitle: 'X' },
             ]);
             axios_1.default.get.mockRejectedValue(new Error('fail'));
-            yield expect(movieService.getMovieRecommendations('1')).rejects.toBeInstanceOf(internal_server_error_1.InternalServerError);
+            yield expect(movieService.getMovieRecommendations('1', {})).rejects.toBeInstanceOf(internal_server_error_1.InternalServerError);
         }));
     });
 });

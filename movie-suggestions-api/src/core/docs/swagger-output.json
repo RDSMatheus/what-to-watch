@@ -1,23 +1,15 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
     "title": "movie-suggestions-api Api",
     "description": "Documentação da api movie-suggestions-api Api.",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
-  "basePath": "/",
-  "schemes": [
-    "https"
-  ],
-  "securityDefinitions": {
-    "bearerAuth": {
-      "type": "apiKey",
-      "name": "Authorization",
-      "in": "header",
-      "description": "Insira o token JWT no formato **Bearer &lt;token&gt;**"
+  "servers": [
+    {
+      "url": "http://localhost:3000"
     }
-  },
+  ],
   "paths": {
     "/user": {
       "post": {
@@ -33,23 +25,41 @@
             "description": "Dados do usuário",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/UserPost"
+              "$ref": "#/components/schemas/UserPost"
             }
           }
         ],
         "responses": {
           "201": {
             "description": "Usuário criado.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Usuário criado com sucesso!"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Usuário criado com sucesso!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Usuário criado com sucesso!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           }
@@ -68,26 +78,49 @@
             "name": "email",
             "in": "params",
             "required": true,
-            "type": "string",
+            "schema": {
+              "type": "string"
+            },
             "description": "Dados do usuário"
           }
         ],
         "responses": {
           "200": {
             "description": "Usuário retornado.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Usuário criado com sucesso!"
-                },
-                "user": {
-                  "$ref": "#/definitions/UserResponse"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Usuário criado com sucesso!"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/UserResponse"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Usuário criado com sucesso!"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/UserResponse"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           }
@@ -111,7 +144,9 @@
             "name": "id",
             "in": "params",
             "required": true,
-            "type": "string",
+            "schema": {
+              "type": "string"
+            },
             "description": "Id do usuário"
           }
         ],
@@ -137,7 +172,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "integer",
+            "schema": {
+              "type": "string"
+            },
             "description": "ID do usuário"
           },
           {
@@ -167,49 +204,106 @@
         "responses": {
           "200": {
             "description": "Usuário atualizado com sucesso",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Usuário atualizado com sucesso"
-                },
-                "user": {
-                  "$ref": "#/definitions/UserResponse"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Usuário atualizado com sucesso"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/UserResponse"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Usuário atualizado com sucesso"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/UserResponse"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           },
           "400": {
             "description": "Dados inválidos",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Dados inválidos"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Dados inválidos"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Dados inválidos"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           },
           "404": {
             "description": "Usuário não encontrado",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Usuário não encontrado"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Usuário não encontrado"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Usuário não encontrado"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           }
@@ -235,23 +329,41 @@
             "description": "Dados da reação",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/ReactionPost"
+              "$ref": "#/components/schemas/ReactionPost"
             }
           }
         ],
         "responses": {
           "200": {
             "description": "Reação com sucesso.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Reagido com sucesso!"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Reagido com sucesso!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Reagido com sucesso!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           }
@@ -270,60 +382,123 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "integer",
+            "schema": {
+              "type": "string"
+            },
             "description": "ID do usuário"
           }
         ],
         "responses": {
           "200": {
             "description": "Lista de filmes curtidos retornada com sucesso.",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "movieId": {
-                    "type": "string",
-                    "example": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "movieId": {
+                        "type": "string",
+                        "example": "string"
+                      },
+                      "movieTitle": {
+                        "type": "string",
+                        "example": "string"
+                      }
+                    }
                   },
-                  "movieTitle": {
-                    "type": "string",
-                    "example": "string"
+                  "xml": {
+                    "name": "main"
                   }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "movieId": {
+                        "type": "string",
+                        "example": "string"
+                      },
+                      "movieTitle": {
+                        "type": "string",
+                        "example": "string"
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           },
           "400": {
             "description": "ID do usuário não informado.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Insira um id."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Insira um id."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Insira um id."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           },
           "404": {
             "description": "Nenhum filme curtido encontrado.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Nenhum filme curtido encontrado."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Nenhum filme curtido encontrado."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Nenhum filme curtido encontrado."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           }
@@ -342,42 +517,68 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "movieId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "ids",
             "in": "path",
             "description": "IDs dos usuários, separados por vírgula",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "movieIds",
             "in": "path",
             "description": "IDs dos filmes, separados por vírgula",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "Reações removidas com sucesso.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Reações removidas com sucesso."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Reações removidas com sucesso."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Reações removidas com sucesso."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           },
@@ -386,16 +587,34 @@
           },
           "400": {
             "description": "IDs inválidos.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "IDs inválidos."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "IDs inválidos."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "IDs inválidos."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           }
@@ -414,66 +633,128 @@
             "name": "name",
             "in": "path",
             "required": true,
-            "type": "string",
+            "schema": {
+              "type": "string"
+            },
             "description": "Nome do filme"
           }
         ],
         "responses": {
           "200": {
             "description": "Filme(s) encontrado(s).",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Filme encontrado"
-                },
-                "movies": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/TMDBmovieScore"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Filme encontrado"
+                    },
+                    "movies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TMDBmovieScore"
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
                   }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Filme encontrado"
+                    },
+                    "movies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TMDBmovieScore"
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           },
           "400": {
             "description": "Nome do filme não informado.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Insira o nome de um filme"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Insira o nome de um filme"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Insira o nome de um filme"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           },
           "404": {
             "description": "Filme não encontrado.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Filme não encontrado."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Filme não encontrado."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Filme não encontrado."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           }
         }
       }
     },
-    "/movie/user/{userId}": {
+    "/movie/user/{userId}/recommendations": {
       "get": {
         "tags": [
           "Movie"
@@ -485,47 +766,135 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "integer",
+            "schema": {
+              "type": "string"
+            },
             "description": "ID do usuário"
+          },
+          {
+            "name": "pages",
+            "in": "query",
+            "style": "deepObject",
+            "explode": true,
+            "allowReserved": true,
+            "description": "Mapeamento dinâmico movieId→página. Exemplo de uso: ?pages[550]=2&pages[278]=1",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "550": {
+                  "type": "string",
+                  "example": "2"
+                }
+              }
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "Recomendações retornadas.",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "movieTitle": {
-                    "type": "string",
-                    "example": "string"
-                  },
-                  "recommendations": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/definitions/TMDBmovieScore"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "movieTitle": {
+                        "type": "string",
+                        "example": "string"
+                      },
+                      "recommendations": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/TMDBmovieScore"
+                        }
+                      },
+                      "page": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "total_pages": {
+                        "type": "number",
+                        "example": 10
+                      },
+                      "total_results": {
+                        "type": "number",
+                        "example": 100
+                      }
                     }
+                  },
+                  "xml": {
+                    "name": "main"
                   }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "movieTitle": {
+                        "type": "string",
+                        "example": "string"
+                      },
+                      "recommendations": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/TMDBmovieScore"
+                        }
+                      },
+                      "page": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "total_pages": {
+                        "type": "number",
+                        "example": 10
+                      },
+                      "total_results": {
+                        "type": "number",
+                        "example": 100
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           },
           "404": {
             "description": "Não há filmes para se basear recomendações",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Não há filmes para se basear recomendações"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Não há filmes para se basear recomendações"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Não há filmes para se basear recomendações"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           }
@@ -542,37 +911,79 @@
         "responses": {
           "200": {
             "description": "Filmes encontrados.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Filmes que estão em trending."
-                },
-                "movies": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/TMDBSearch"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Filmes que estão em trending."
+                    },
+                    "movies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TMDBSearch"
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
                   }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Filmes que estão em trending."
+                    },
+                    "movies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TMDBSearch"
+                      }
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           },
           "500": {
             "description": "Erro interno do servidor.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Erro interno do servidor"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Erro interno do servidor"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           }
@@ -610,35 +1021,92 @@
         "responses": {
           "200": {
             "description": "Login realizado com sucesso",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Token retornado com sucesso!"
-                },
-                "token": {
-                  "type": "string",
-                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token retornado com sucesso!"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token retornado com sucesso!"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           },
           "400": {
             "description": "Dados inválidos",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Email/senha inválidos"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email/senha inválidos"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email/senha inválidos"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
               }
             }
           }
@@ -658,37 +1126,75 @@
             "in": "query",
             "description": "Token de verificação",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "Email verificado com sucesso",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Usuário verificado com sucesso!"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Usuário verificado com sucesso!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Usuário verificado com sucesso!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           },
           "400": {
             "description": "Token inválido",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Token inválido"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           }
@@ -722,31 +1228,81 @@
         "responses": {
           "200": {
             "description": "Email enviado com sucesso",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Email de recuperação!"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email de recuperação!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email de recuperação!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           },
           "404": {
             "description": "Email não encontrado",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Email inválido"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email inválido"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email inválido"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  }
+                }
               }
             }
           }
@@ -784,31 +1340,67 @@
         "responses": {
           "200": {
             "description": "Senha alterada com sucesso",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Senha redefinida com sucesso!"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Senha redefinida com sucesso!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Senha redefinida com sucesso!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           },
           "401": {
             "description": "Não autorizado",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Token inválido!"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
                 }
               },
-              "xml": {
-                "name": "main"
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Token inválido!"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
               }
             }
           }
@@ -817,212 +1409,290 @@
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
-  "definitions": {
-    "UserPost": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "example": "string"
-        },
-        "email": {
-          "type": "string",
-          "example": "string@email.com"
-        },
-        "password": {
-          "type": "string",
-          "example": "string"
-        }
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Insira o token no formato **Bearer <token>**"
       }
     },
-    "UserResponse": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "example": "number"
-        },
-        "name": {
-          "type": "string",
-          "example": "string"
-        },
-        "email": {
-          "type": "string",
-          "example": "string@email.com"
-        }
-      }
-    },
-    "AuthResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "string"
-        },
-        "token": {
-          "type": "string",
-          "example": "string"
-        }
-      }
-    },
-    "ReactionPost": {
-      "type": "object",
-      "properties": {
-        "movieId": {
-          "type": "string",
-          "example": "string"
-        },
-        "userId": {
-          "type": "string",
-          "example": "number"
-        },
-        "type": {
-          "type": "string",
-          "enum": [
-            "LIKE",
-            "DISLIKE"
-          ]
-        }
-      }
-    },
-    "Reaction": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 1
-        },
-        "userId": {
-          "type": "number",
-          "example": 1
-        },
-        "movieId": {
-          "type": "string",
-          "example": "string"
-        },
-        "movieTitle": {
-          "type": "string",
-          "example": "string"
-        },
-        "type": {
-          "type": "string",
-          "example": "LIKE"
-        },
-        "createdAt": {
-          "type": "string",
-          "example": "2024-01-01T00:00:00.000Z"
-        }
-      }
-    },
-    "ReactionResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "Reação criada com sucesso!"
-        },
-        "reaction": {
-          "$ref": "#/definitions/Reaction"
-        }
-      }
-    },
-    "TMDBmovie": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 123
-        },
-        "title": {
-          "type": "string",
-          "example": "Exemplo de Filme"
-        },
-        "original_title": {
-          "type": "string",
-          "example": "Exemplo de Filme"
-        },
-        "overview": {
-          "type": "string",
-          "example": "Descrição do filme"
-        },
-        "poster_path": {
-          "type": "string",
-          "example": "/poster.jpg"
-        },
-        "media_type": {
-          "type": "string",
-          "example": "movie"
-        },
-        "genre_ids": {
-          "type": "array",
-          "example": [
-            1,
-            2
-          ],
-          "items": {
-            "type": "number"
+    "schemas": {
+      "UserPost": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "string"
+          },
+          "email": {
+            "type": "string",
+            "example": "string@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "string"
           }
         },
-        "popularity": {
-          "type": "number",
-          "example": 10.5
-        },
-        "release_date": {
-          "type": "string",
-          "example": "2024-01-01"
-        },
-        "vote_average": {
-          "type": "number",
-          "example": 8.2
-        },
-        "vote_count": {
-          "type": "number",
-          "example": 100
+        "xml": {
+          "name": "UserPost"
         }
-      }
-    },
-    "TMDBmovieScore": {
-      "$ref": "#/definitions/TMDBmovie"
-    },
-    "TMDBSearch": {
-      "type": "object",
-      "properties": {
-        "page": {
-          "type": "number",
-          "example": 1
-        },
-        "results": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TMDBmovie"
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "number"
+          },
+          "name": {
+            "type": "string",
+            "example": "string"
+          },
+          "email": {
+            "type": "string",
+            "example": "string@email.com"
           }
         },
-        "total_pages": {
-          "type": "number",
-          "example": 10
-        },
-        "total_results": {
-          "type": "number",
-          "example": 100
+        "xml": {
+          "name": "UserResponse"
         }
-      }
-    },
-    "TMDBSearchResponse": {
-      "type": "object",
-      "properties": {
-        "movieTitle": {
-          "type": "string",
-          "example": "Exemplo de Filme"
-        },
-        "recommendations": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TMDBmovie"
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "string"
+          },
+          "token": {
+            "type": "string",
+            "example": "string"
           }
+        },
+        "xml": {
+          "name": "AuthResponse"
+        }
+      },
+      "ReactionPost": {
+        "type": "object",
+        "properties": {
+          "movieId": {
+            "type": "string",
+            "example": "string"
+          },
+          "userId": {
+            "type": "string",
+            "example": "number"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "LIKE",
+              "DISLIKE"
+            ]
+          }
+        },
+        "xml": {
+          "name": "ReactionPost"
+        }
+      },
+      "Reaction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "userId": {
+            "type": "number",
+            "example": 1
+          },
+          "movieId": {
+            "type": "string",
+            "example": "string"
+          },
+          "movieTitle": {
+            "type": "string",
+            "example": "string"
+          },
+          "type": {
+            "type": "string",
+            "example": "LIKE"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2024-01-01T00:00:00.000Z"
+          }
+        },
+        "xml": {
+          "name": "Reaction"
+        }
+      },
+      "ReactionResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Reação criada com sucesso!"
+          },
+          "reaction": {
+            "xml": {
+              "name": "reaction"
+            },
+            "$ref": "#/components/schemas/Reaction"
+          }
+        },
+        "xml": {
+          "name": "ReactionResponse"
+        }
+      },
+      "TMDBmovie": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 123
+          },
+          "title": {
+            "type": "string",
+            "example": "Exemplo de Filme"
+          },
+          "original_title": {
+            "type": "string",
+            "example": "Exemplo de Filme"
+          },
+          "overview": {
+            "type": "string",
+            "example": "Descrição do filme"
+          },
+          "poster_path": {
+            "type": "string",
+            "example": "/poster.jpg"
+          },
+          "media_type": {
+            "type": "string",
+            "example": "movie"
+          },
+          "genre_ids": {
+            "type": "array",
+            "example": [
+              1,
+              2
+            ],
+            "items": {
+              "type": "number"
+            }
+          },
+          "popularity": {
+            "type": "number",
+            "example": 10.5
+          },
+          "release_date": {
+            "type": "string",
+            "example": "2024-01-01"
+          },
+          "vote_average": {
+            "type": "number",
+            "example": 8.2
+          },
+          "vote_count": {
+            "type": "number",
+            "example": 100
+          }
+        },
+        "xml": {
+          "name": "TMDBmovie"
+        }
+      },
+      "TMDBmovieScore": {
+        "xml": {
+          "name": "TMDBmovieScore"
+        },
+        "$ref": "#/components/schemas/TMDBmovie"
+      },
+      "TMDBSearch": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "number",
+            "example": 1
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "xml": {
+                "name": "tmdbmovie"
+              },
+              "$ref": "#/components/schemas/TMDBmovie"
+            }
+          },
+          "total_pages": {
+            "type": "number",
+            "example": 10
+          },
+          "total_results": {
+            "type": "number",
+            "example": 100
+          }
+        },
+        "xml": {
+          "name": "TMDBSearch"
+        }
+      },
+      "TMDBSearchResponse": {
+        "type": "object",
+        "properties": {
+          "movieTitle": {
+            "type": "string",
+            "example": "Exemplo de Filme"
+          },
+          "recommendations": {
+            "type": "array",
+            "items": {
+              "xml": {
+                "name": "tmdbmovie"
+              },
+              "$ref": "#/components/schemas/TMDBmovie"
+            }
+          },
+          "total_pages": {
+            "type": "number",
+            "example": 10
+          },
+          "total_results": {
+            "type": "number",
+            "example": 100
+          },
+          "page": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "xml": {
+          "name": "TMDBSearchResponse"
         }
       }
     }

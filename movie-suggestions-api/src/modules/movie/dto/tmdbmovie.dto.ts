@@ -10,6 +10,7 @@ export interface TMDBmovie {
   release_date: string;
   vote_average: number;
   vote_count: number;
+  backdrop_path: string;
 }
 
 export interface TMDBmovieScore extends TMDBmovie {
@@ -26,4 +27,7 @@ export interface TMDBSearch {
 export interface TMDBSearchResponse {
   movieTitle: string;
   recommendations: TMDBmovieScore[];
+  total_pages: number;
+  total_results: number;
+  page: number;
 }

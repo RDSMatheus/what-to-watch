@@ -26,10 +26,10 @@ class MovieService {
     const cachedMovie = await cache<TMDBSearch>(name);
 
     if (cachedMovie) return cachedMovie;
-    
+
     try {
       const data = await this.fetchFromTMDB<TMDBSearch>(
-        `https://api.themoviedb.org/3/search/movie?query=${name}&include_adult=false&language=en-US&page=1`,
+        `https://api.themoviedb.org/3/search/movie?query=${name}&include_adult=false&language=pt-BR&page=1`,
       );
 
       if (!data.total_results) throw new NotFoundError('Filme não encontrado.');
@@ -56,11 +56,15 @@ class MovieService {
     }
   }
 
-  async getMovieRecommendations(userId: string): Promise<TMDBSearchResponse[]> {
-    const cachedRecommendations = await cache<TMDBSearchResponse[]>(userId);
+  async getMovieRecommendations(
+    userId: string,
+    pagesMap: Record<string, string>,
+  ): Promise<TMDBSearchResponse[]> {
+    const cacheKey = `recommendations:${userId}:${JSON.stringify(pagesMap)}`;
+
+    const cachedRecommendations = await cache<TMDBSearchResponse[]>(cacheKey);
 
     if (cachedRecommendations) return cachedRecommendations;
-
     const id = Number(userId);
     if (!id) {
       throw new ValidationError('Insira o ID do usuário');
@@ -68,32 +72,38 @@ class MovieService {
 
     try {
       const likedMovies = await this.reactionRepository.getLikedMovies(id);
-
       if (!likedMovies.length)
         throw new NotFoundError('Não há filmes para se basear recomendações');
 
       const fetchedMovies = await Promise.all(
         likedMovies.map(async (movie) => {
+          const page = pagesMap[movie.movieId] || '1';
+
           const data = await this.fetchFromTMDB<TMDBSearch>(
-            ` https://api.themoviedb.org/3/movie/${movie.movieId}/recommendations`,
+            ` https://api.themoviedb.org/3/movie/${movie.movieId}/recommendations?language=en-US&page=${page}`,
           );
 
           const resultsCombinedScore: TMDBmovieScore[] = data.results.map(
             (movie) => ({
               ...movie,
+              poster_path: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+              backdrop_path: `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`,
               combinedScore: this.calculateCombinedScore(movie),
             }),
           );
 
           const resultsSortedByScore = this.sortMovies(resultsCombinedScore);
 
-          const recommendations = {
+          const recommendations: TMDBSearchResponse = {
             movieTitle: movie.movieTitle,
             recommendations: resultsSortedByScore,
+            page: data.page,
+            total_pages: data.total_pages,
+            total_results: data.total_results,
           };
 
           await redisClient.setEx(
-            userId,
+            cacheKey,
             3600,
             JSON.stringify(recommendations),
           );

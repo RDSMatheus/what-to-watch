@@ -33,7 +33,7 @@ class MovieService {
             if (cachedMovie)
                 return cachedMovie;
             try {
-                const data = yield this.fetchFromTMDB(`https://api.themoviedb.org/3/search/movie?query=${name}&include_adult=false&language=en-US&page=1`);
+                const data = yield this.fetchFromTMDB(`https://api.themoviedb.org/3/search/movie?query=${name}&include_adult=false&language=pt-BR&page=1`);
                 if (!data.total_results)
                     throw new not_found_error_1.NotFoundError('Filme não encontrado.');
                 const resultsCombinedScore = data.results.map((movie) => (Object.assign(Object.assign({}, movie), { combinedScore: this.calculateCombinedScore(movie) })));
@@ -50,9 +50,10 @@ class MovieService {
             }
         });
     }
-    getMovieRecommendations(userId) {
+    getMovieRecommendations(userId, pagesMap) {
         return __awaiter(this, void 0, void 0, function* () {
-            const cachedRecommendations = yield (0, cache_1.default)(userId);
+            const cacheKey = `recommendations:${userId}:${JSON.stringify(pagesMap)}`;
+            const cachedRecommendations = yield (0, cache_1.default)(cacheKey);
             if (cachedRecommendations)
                 return cachedRecommendations;
             const id = Number(userId);
@@ -64,14 +65,18 @@ class MovieService {
                 if (!likedMovies.length)
                     throw new not_found_error_1.NotFoundError('Não há filmes para se basear recomendações');
                 const fetchedMovies = yield Promise.all(likedMovies.map((movie) => __awaiter(this, void 0, void 0, function* () {
-                    const data = yield this.fetchFromTMDB(` https://api.themoviedb.org/3/movie/${movie.movieId}/recommendations`);
-                    const resultsCombinedScore = data.results.map((movie) => (Object.assign(Object.assign({}, movie), { combinedScore: this.calculateCombinedScore(movie) })));
+                    const page = pagesMap[movie.movieId] || '1';
+                    const data = yield this.fetchFromTMDB(` https://api.themoviedb.org/3/movie/${movie.movieId}/recommendations?language=en-US&page=${page}`);
+                    const resultsCombinedScore = data.results.map((movie) => (Object.assign(Object.assign({}, movie), { poster_path: `https://image.tmdb.org/t/p/w500${movie.poster_path}`, backdrop_path: `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`, combinedScore: this.calculateCombinedScore(movie) })));
                     const resultsSortedByScore = this.sortMovies(resultsCombinedScore);
                     const recommendations = {
                         movieTitle: movie.movieTitle,
                         recommendations: resultsSortedByScore,
+                        page: data.page,
+                        total_pages: data.total_pages,
+                        total_results: data.total_results,
                     };
-                    yield client_1.redisClient.setEx(userId, 3600, JSON.stringify(recommendations));
+                    yield client_1.redisClient.setEx(cacheKey, 3600, JSON.stringify(recommendations));
                     return recommendations;
                 })));
                 return fetchedMovies;
