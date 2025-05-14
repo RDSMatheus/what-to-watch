@@ -15,6 +15,7 @@ export interface TMDBmovie {
 
 export interface TMDBmovieScore extends TMDBmovie {
   combinedScore: number;
+  genre_names: string[]
 }
 
 export interface TMDBSearch {
@@ -30,4 +31,8 @@ export interface TMDBSearchResponse {
   total_pages: number;
   total_results: number;
   page: number;
+}
+
+export interface TMDBGenres {
+  genres: { id: number; name: string }[];
 }

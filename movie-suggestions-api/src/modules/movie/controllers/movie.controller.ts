@@ -13,7 +13,7 @@ class MovieController {
   static async getMovieRecommendations(req: Request, res: Response) {
     const { userId } = req.params;
     const pages = (req.query.pages as Record<string, string>) || {};
-    console.log(pages);
+   
     const recommendations = await new MovieService().getMovieRecommendations(
       userId,
       pages,

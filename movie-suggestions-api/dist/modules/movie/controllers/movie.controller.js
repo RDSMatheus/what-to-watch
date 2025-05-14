@@ -25,7 +25,6 @@ class MovieController {
         return __awaiter(this, void 0, void 0, function* () {
             const { userId } = req.params;
             const pages = req.query.pages || {};
-            console.log(pages);
             const recommendations = yield new movie_service_1.default().getMovieRecommendations(userId, pages);
             res.status(200).json({ message: 'Sugestões de filmes', recommendations });
         });

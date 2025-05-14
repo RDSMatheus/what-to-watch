@@ -1,6 +1,7 @@
 import axios from 'axios';
 import ReactionRepository from '../../reaction/repository/reaction.repository';
 import {
+  TMDBGenres,
   TMDBmovie,
   TMDBmovieScore,
   TMDBSearch,
@@ -21,23 +22,28 @@ class MovieService {
   }
 
   async getMovieByName(name: string): Promise<TMDBSearch> {
-    if (!name) throw new ValidationError('Insira o nome de um filme');
-
-    const cachedMovie = await cache<TMDBSearch>(name);
-
-    if (cachedMovie) return cachedMovie;
-
     try {
+      if (!name) throw new ValidationError('Insira o nome de um filme');
+
+      const cachedMovie = await cache<TMDBSearch>(name);
+
+      if (cachedMovie) return cachedMovie;
+
       const data = await this.fetchFromTMDB<TMDBSearch>(
         `https://api.themoviedb.org/3/search/movie?query=${name}&include_adult=false&language=pt-BR&page=1`,
       );
 
       if (!data.total_results) throw new NotFoundError('Filme não encontrado.');
 
+      const genres = await this.getGenres();
+
       const resultsCombinedScore: TMDBmovieScore[] = data.results.map(
         (movie) => ({
           ...movie,
+          poster_path: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+          backdrop_path: `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`,
           combinedScore: this.calculateCombinedScore(movie),
+          genre_names: this.mapGenres(movie, genres),
         }),
       );
 
@@ -60,18 +66,21 @@ class MovieService {
     userId: string,
     pagesMap: Record<string, string>,
   ): Promise<TMDBSearchResponse[]> {
-    const cacheKey = `recommendations:${userId}:${JSON.stringify(pagesMap)}`;
-
-    const cachedRecommendations = await cache<TMDBSearchResponse[]>(cacheKey);
-
-    if (cachedRecommendations) return cachedRecommendations;
-    const id = Number(userId);
-    if (!id) {
-      throw new ValidationError('Insira o ID do usuário');
-    }
-
     try {
+      const cacheKey = `recommendations:${userId}:${JSON.stringify(pagesMap)}`;
+
+      const cachedRecommendations = await cache<TMDBSearchResponse[]>(cacheKey);
+
+      if (cachedRecommendations) return cachedRecommendations;
+
+      const id = Number(userId);
+
+      if (!id) {
+        throw new ValidationError('Insira o ID do usuário');
+      }
+
       const likedMovies = await this.reactionRepository.getLikedMovies(id);
+
       if (!likedMovies.length)
         throw new NotFoundError('Não há filmes para se basear recomendações');
 
@@ -80,8 +89,10 @@ class MovieService {
           const page = pagesMap[movie.movieId] || '1';
 
           const data = await this.fetchFromTMDB<TMDBSearch>(
-            ` https://api.themoviedb.org/3/movie/${movie.movieId}/recommendations?language=en-US&page=${page}`,
+            `https://api.themoviedb.org/3/movie/${movie.movieId}/recommendations?language=pt-BR&page=${page}`,
           );
+
+          const genres = await this.getGenres();
 
           const resultsCombinedScore: TMDBmovieScore[] = data.results.map(
             (movie) => ({
@@ -89,6 +100,7 @@ class MovieService {
               poster_path: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
               backdrop_path: `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`,
               combinedScore: this.calculateCombinedScore(movie),
+              genre_names: this.mapGenres(movie, genres),
             }),
           );
 
@@ -122,15 +134,55 @@ class MovieService {
   }
 
   async getTrendingMovies(): Promise<TMDBSearch> {
-    const key = 'trending';
-
-    const cached = await cache<TMDBSearch>(key);
-
-    if (cached) return cached;
-
     try {
-      const data = this.fetchFromTMDB<TMDBSearch>(
+      const key = 'trending';
+
+      const cached = await cache<TMDBSearch>(key);
+
+      if (cached) return cached;
+
+      const data = await this.fetchFromTMDB<TMDBSearch>(
         'https://api.themoviedb.org/3/trending/movie/week?language=pt-BR',
+      );
+
+      if (!data) throw new InternalServerError();
+
+      const genres = await this.getGenres();
+
+      const resultWithImgAndGenres: TMDBmovieScore[] = data.results.map(
+        (movie) => ({
+          ...movie,
+          poster_path: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+          backdrop_path: `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`,
+          combinedScore: this.calculateCombinedScore(movie),
+          genre_names: this.mapGenres(movie, genres),
+        }),
+      );
+
+      const trending: TMDBSearch = {
+        ...data,
+        results: resultWithImgAndGenres,
+      };
+
+      await redisClient.setEx(key, 3600, JSON.stringify(trending));
+
+      return trending;
+    } catch (error) {
+      if (error instanceof Error) throw new ErrorBase(400, error.message);
+      throw error;
+    }
+  }
+
+  async getGenres(): Promise<TMDBGenres> {
+    try {
+      const key = 'genres';
+
+      const cached = await cache<TMDBGenres>(key);
+
+      if (cached) return cached;
+
+      const data = await this.fetchFromTMDB<TMDBGenres>(
+        'https://api.themoviedb.org/3/genre/movie/list?language=pt',
       );
 
       if (!data) throw new InternalServerError();
@@ -139,9 +191,15 @@ class MovieService {
 
       return data;
     } catch (error) {
-      if (error instanceof Error) throw new ErrorBase(400, error.message);
-      throw error;
+      if (error instanceof ErrorBase) throw error;
+      throw new InternalServerError();
     }
+  }
+
+  private mapGenres(movie: TMDBmovie, genres: TMDBGenres): string[] {
+    return movie.genre_ids.map(
+      (id) => genres.genres.find((g) => g.id === id)?.name || 'Desconhecido',
+    );
   }
 
   private calculateCombinedScore(movie: TMDBmovie): number {
