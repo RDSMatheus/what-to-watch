@@ -990,6 +990,228 @@
                 }
             }
         },
+        "/movie/upcoming": {
+            "get": {
+                "tags": [
+                    "Movie"
+                ],
+                "summary": "Lista filmes em lançamento.",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página dos lançamentos",
+                        "required": false,
+                        "default": 1,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Filmes em lançamento resgatados.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Filmes em lançamento resgatados"
+                                        },
+                                        "upcoming": {
+                                            "$ref": "#/components/schemas/TMDBUpcomingResponse"
+                                        }
+                                    },
+                                    "xml": {
+                                        "name": "main"
+                                    }
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Filmes em lançamento resgatados"
+                                        },
+                                        "upcoming": {
+                                            "$ref": "#/components/schemas/TMDBUpcomingResponse"
+                                        }
+                                    },
+                                    "xml": {
+                                        "name": "main"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erro interno do servidor"
+                                        }
+                                    },
+                                    "xml": {
+                                        "name": "main"
+                                    }
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erro interno do servidor"
+                                        }
+                                    },
+                                    "xml": {
+                                        "name": "main"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/movie/details/{movieId}": {
+            "get": {
+                "tags": [
+                    "Movie"
+                ],
+                "summary": "Detalhes completos de um filme, incluindo elenco.",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "movieId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID do filme"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do filme retornados com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detalhes do filmes retornados com sucesso."
+                                        },
+                                        "movieDetails": {
+                                            "$ref": "#/components/schemas/TMDBMovieDetails"
+                                        }
+                                    },
+                                    "xml": {
+                                        "name": "main"
+                                    }
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detalhes do filmes retornados com sucesso."
+                                        },
+                                        "movieDetails": {
+                                            "$ref": "#/components/schemas/TMDBMovieDetails"
+                                        }
+                                    },
+                                    "xml": {
+                                        "name": "main"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "ID do filme inválido.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Insira um movieId válido"
+                                        }
+                                    },
+                                    "xml": {
+                                        "name": "main"
+                                    }
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Insira um movieId válido"
+                                        }
+                                    },
+                                    "xml": {
+                                        "name": "main"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erro interno do servidor"
+                                        }
+                                    },
+                                    "xml": {
+                                        "name": "main"
+                                    }
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erro interno do servidor"
+                                        }
+                                    },
+                                    "xml": {
+                                        "name": "main"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "tags": [
@@ -1669,7 +1891,7 @@
                         "type": "string",
                         "example": "Exemplo de Filme"
                     },
-                    "recommendations": {
+                    "results": {
                         "type": "array",
                         "items": {
                             "xml": {

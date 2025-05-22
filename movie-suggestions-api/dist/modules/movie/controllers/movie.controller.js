@@ -18,7 +18,7 @@ class MovieController {
         return __awaiter(this, void 0, void 0, function* () {
             const { name } = req.params;
             const movie = yield new movie_service_1.default().getMovieByName(name);
-            res.status(200).json({ message: 'Filme encontrado', movie });
+            res.status(200).json({ message: "Filme encontrado", movie });
         });
     }
     static getMovieRecommendations(req, res) {
@@ -26,13 +26,43 @@ class MovieController {
             const { userId } = req.params;
             const pages = req.query.pages || {};
             const recommendations = yield new movie_service_1.default().getMovieRecommendations(userId, pages);
-            res.status(200).json({ message: 'Sugestões de filmes', recommendations });
+            res.status(200).json({ message: "Sugestões de filmes", recommendations });
+        });
+    }
+    static getUpcomingMovies(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { page } = req.query;
+            const upcoming = yield new movie_service_1.default().getUpcomingMovies(String(page));
+            res
+                .status(200)
+                .json({ message: "Filmes em lançamento resgatados", upcoming });
+        });
+    }
+    static getMovieDetails(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { movieId } = req.params;
+            const movieDetails = yield new movie_service_1.default().getMovieDetails(movieId);
+            res.status(200).json({
+                message: "Detalhes do filmes retornados com sucesso.",
+                movieDetails,
+            });
+        });
+    }
+    static getMovieByGenre(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { vote_average, page, genre } = req.params;
+            const movies = yield new movie_service_1.default().getMovieByGenre({
+                vote_average,
+                page,
+                genre,
+            });
+            res.status(200).json({ message: "Filmes retornados com sucesso", movies });
         });
     }
     static getTrendingMovies(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const trending = yield new movie_service_1.default().getTrendingMovies();
-            res.status(200).json({ message: 'Filmes que estão em trending', trending });
+            res.status(200).json({ message: "Filmes que estão em trending", trending });
         });
     }
 }
