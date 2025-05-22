@@ -106,6 +106,10 @@ src/
 
 Access Swagger docs at: `http://localhost:3000/docs`
 
+##Live API documentation
+
+Live documentation: https://what-to-watch-lh6h.onrender.com/
+
 ## License
 
 ISC
